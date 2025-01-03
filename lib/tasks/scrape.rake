@@ -60,4 +60,22 @@ namespace :scrape do
       Expansion.create_with(title: expansion_data["name"]).find_or_create_by!(code: expansion_data["code"])
     end
   end
+
+  desc "Scrape Aspects data from Card List data"
+  task aspects: :environment do
+    json = File.read("tmp/storage/card_list.json")
+    data = Oj.load(json)
+
+    aspects = Set.new
+
+    data.each do |card_data|
+      card_data["attributes"]["aspects"]["data"].each do |aspect_data|
+        aspects << aspect_data["attributes"]
+      end
+    end
+
+    aspects.each do |aspect_data|
+      Aspect.create_with(description: aspect_data["description"], color: aspect_data["color"]).find_or_create_by!(name: aspect_data["name"])
+    end
+  end
 end

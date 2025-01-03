@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_03_005659) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_03_030858) do
+  create_table "aspects", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "color"
+    t.index ["name"], name: "index_aspects_on_name", unique: true
+  end
+
   create_table "expansions", force: :cascade do |t|
     t.string "code"
     t.string "title"
