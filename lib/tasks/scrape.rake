@@ -3,7 +3,7 @@ require "oj"
 require "progress_bar"
 
 namespace :scrape do
-  desc "Delete all PDFs from public/pdfs and its subdirectories older than midnight"
+  desc "Scrape Card List API endpoint for English cards"
   task cards: :environment do
     FileUtils.mkdir_p("tmp/storage/card_list")
     @connection = ::Faraday.new(headers: { "Content-Type": "application/json" })
@@ -33,5 +33,15 @@ namespace :scrape do
       File.write("tmp/storage/card_list/#{page}.json", results.body)
       progress.increment!
     end
+
+    card_list = []
+
+    Rake::FileList["tmp/storage/card_list/*.json"].each do |file|
+      json = File.read(file)
+      data = Oj.load(json)["data"]
+      card_list.concat(data)
+    end
+
+    File.write("tmp/storage/card_list.json", Oj.dump(card_list))
   end
 end
