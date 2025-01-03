@@ -4,7 +4,7 @@ require "progress_bar"
 
 namespace :scrape do
   desc "Scrape Card List API endpoint for English cards"
-  task cards: :environment do
+  task card_list: :environment do
     FileUtils.mkdir_p("tmp/storage/card_list")
     @connection = ::Faraday.new(headers: { "Content-Type": "application/json" })
 
