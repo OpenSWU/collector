@@ -44,4 +44,20 @@ namespace :scrape do
 
     File.write("tmp/storage/card_list.json", Oj.dump(card_list))
   end
+
+  desc "Scrape Expansion data from Card List data"
+  task expansions: :environment do
+    json = File.read("tmp/storage/card_list.json")
+    data = Oj.load(json)
+
+    expansions = Set.new
+
+    data.each do |card_data|
+      expansions << card_data["attributes"]["expansion"]["data"]["attributes"]
+    end
+
+    expansions.each do |expansion_data|
+      Expansion.create_with(title: expansion_data["name"]).find_or_create_by!(code: expansion_data["code"])
+    end
+  end
 end
