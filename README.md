@@ -1,6 +1,7 @@
 # Open SWU Collector
 
-Open SWU provides a tool for maintaining a Star Wars Unlimited card collection.
+Open SWU Collector provides a tool for maintaining a Star Wars Unlimited card
+collection.
 
 ## License
 
