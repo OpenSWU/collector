@@ -78,4 +78,27 @@ namespace :scrape do
       Aspect.create_with(description: aspect_data["description"], color: aspect_data["color"]).find_or_create_by!(name: aspect_data["name"])
     end
   end
+
+  desc "Scrape Card data from Card List data"
+  task cards: :environment do
+    json = File.read("tmp/storage/card_list.json")
+    data = Oj.load(json)
+
+    cards = Set.new
+
+    data.each do |card_data|
+      cards << {
+        swuid: card_data["id"],
+        swu_cardid: card_data["attributes"]["cardUid"],
+        title: card_data["attributes"]["title"],
+        subtitle: card_data["attributes"]["subtitle"],
+        number: card_data["attributes"]["cardNumber"],
+        set_code: card_data["attributes"]["expansion"]["data"]["attributes"]["code"]
+      }
+    end
+
+    cards.each do |card_data|
+      Card.create_with(title: card_data[:title], subtitle: card_data[:subtitle], number: card_data[:number], set_code: card_data[:set_code]).find_or_create_by!(swuid: card_data[:swuid], swu_cardid: card_data[:swu_cardid])
+    end
+  end
 end

@@ -10,12 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_03_030858) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_03_032019) do
   create_table "aspects", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.string "color"
     t.index ["name"], name: "index_aspects_on_name", unique: true
+  end
+
+  create_table "cards", force: :cascade do |t|
+    t.integer "swuid"
+    t.integer "swu_cardid"
+    t.string "title"
+    t.string "subtitle"
+    t.integer "number"
+    t.string "set_code"
+    t.index ["set_code"], name: "index_cards_on_set_code"
+    t.index ["swuid", "swu_cardid"], name: "index_cards_on_swuid_and_swu_cardid", unique: true
   end
 
   create_table "expansions", force: :cascade do |t|
