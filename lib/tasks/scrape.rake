@@ -45,7 +45,7 @@ namespace :scrape do
     File.write("tmp/storage/card_list.json", Oj.dump(card_list))
   end
 
-  desc "Scrape Expansion data from Card List data"
+  desc "Load Expansion data from Card List data"
   task expansions: :environment do
     json = File.read("tmp/storage/card_list.json")
     data = Oj.load(json)
@@ -53,15 +53,18 @@ namespace :scrape do
     expansions = Set.new
 
     data.each do |card_data|
-      expansions << card_data["attributes"]["expansion"]["data"]["attributes"]
+      expansion_data = card_data["attributes"]["expansion"]["data"]["attributes"]
+
+      expansions << {
+        code: expansion_data["code"],
+        title: expansion_data["name"]
+      }
     end
 
-    expansions.each do |expansion_data|
-      Expansion.create_with(title: expansion_data["name"]).find_or_create_by!(code: expansion_data["code"])
-    end
+    Expansion.upsert_all(expansions.to_a, unique_by: :code)
   end
 
-  desc "Scrape Aspects data from Card List data"
+  desc "Load Aspects data from Card List data"
   task aspects: :environment do
     json = File.read("tmp/storage/card_list.json")
     data = Oj.load(json)
@@ -70,16 +73,18 @@ namespace :scrape do
 
     data.each do |card_data|
       card_data["attributes"]["aspects"]["data"].each do |aspect_data|
-        aspects << aspect_data["attributes"]
+        aspects << {
+          name: aspect_data["attributes"]["name"],
+          description: aspect_data["attributes"]["description"],
+          color: aspect_data["attributes"]["color"]
+        }
       end
     end
 
-    aspects.each do |aspect_data|
-      Aspect.create_with(description: aspect_data["description"], color: aspect_data["color"]).find_or_create_by!(name: aspect_data["name"])
-    end
+    Aspect.upsert_all(aspects.to_a, unique_by: :name)
   end
 
-  desc "Scrape Card data from Card List data"
+  desc "Load Card data from Card List data"
   task cards: :environment do
     json = File.read("tmp/storage/card_list.json")
     data = Oj.load(json)
@@ -97,8 +102,6 @@ namespace :scrape do
       }
     end
 
-    cards.each do |card_data|
-      Card.create_with(title: card_data[:title], subtitle: card_data[:subtitle], number: card_data[:number], set_code: card_data[:set_code]).find_or_create_by!(swuid: card_data[:swuid], swu_cardid: card_data[:swu_cardid])
-    end
+    Card.upsert_all(cards.to_a, unique_by: %i[swuid swu_cardid])
   end
 end
