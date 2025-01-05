@@ -1,5 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Aspect, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  its(:name) { is_expected.to be_nil }
+  its(:description) { is_expected.to be_nil }
+  its(:color) { is_expected.to be_nil }
 end
