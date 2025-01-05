@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_03_032019) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_05_015732) do
   create_table "aspects", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -35,4 +35,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_03_032019) do
     t.date "released_on"
     t.index ["code"], name: "index_expansions_on_code", unique: true
   end
+
+  # Virtual tables defined in this database.
+  # Note that virtual tables may not work with other database engines. Be careful if changing database.
+  create_virtual_table "card_search", "fts5", ["title", "subtitle", "set_code"]
 end
