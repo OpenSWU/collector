@@ -1,5 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Rarity, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  its(:name) { is_expected.to be_nil }
+  its(:character) { is_expected.to be_nil }
+  its(:color) { is_expected.to be_nil }
+  its(:sort_order) { is_expected.to be_nil }
 end
