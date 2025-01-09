@@ -58,6 +58,7 @@ group :development, :test do
 
   gem "rspec-rails", "~> 7.1"
   gem "rspec-its", "~> 2.0"
+  gem "simplecov", "~> 0.22.0", require: false
 end
 
 group :development do
