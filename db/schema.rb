@@ -10,7 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_09_221256) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_09_222532) do
+  create_table "arenas", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.index ["name"], name: "index_arenas_on_name", unique: true
+  end
+
   create_table "aspects", force: :cascade do |t|
     t.string "name"
     t.text "description"

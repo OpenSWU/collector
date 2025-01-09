@@ -65,6 +65,25 @@ namespace :scrape do
     Expansion.upsert_all(expansions.to_a, unique_by: :code)
   end
 
+  desc "Load Arenas data from Card List data"
+  task arenas: :environment do
+    json = File.read("tmp/storage/card_list.json")
+    data = Oj.load(json)
+
+    arenas = Set.new
+
+    data.each do |card_data|
+      card_data["attributes"]["arenas"]["data"].each do |arena_data|
+        arenas << {
+          name: arena_data["attributes"]["name"],
+          description: arena_data["attributes"]["description"]
+        }
+      end
+    end
+
+    Arena.upsert_all(arenas.to_a, unique_by: :name)
+  end
+
   desc "Load Aspects data from Card List data"
   task aspects: :environment do
     json = File.read("tmp/storage/card_list.json")
