@@ -145,6 +145,35 @@ namespace :scrape do
     Trait.upsert_all(traits.to_a, unique_by: :name)
   end
 
+  desc "Load Types data from Card List data"
+  task types: :environment do
+    json = File.read("tmp/storage/card_list.json")
+    data = Oj.load(json)
+
+    types = Set.new
+
+    data.each do |card_data|
+      type_data = card_data["attributes"]["type"]["data"]["attributes"]
+      type2_data = card_data["attributes"]["type2"]["data"] ? card_data["attributes"]["type2"]["data"]["attributes"] : nil
+
+      types << {
+        name: type_data["name"],
+        description: type_data["description"],
+        sort_order: type_data["sortValue"]
+      }
+
+      if type2_data
+        types << {
+          name: type2_data["name"],
+          description: type2_data["description"],
+          sort_order: type2_data["sortValue"]
+        }
+      end
+    end
+
+    Type.upsert_all(types.to_a, unique_by: :name)
+  end
+
   desc "Load Card data from Card List data"
   task cards: :environment do
     json = File.read("tmp/storage/card_list.json")

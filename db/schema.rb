@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_09_223735) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_09_224829) do
   create_table "arenas", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -56,6 +56,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_09_223735) do
     t.string "name"
     t.text "description"
     t.index ["name"], name: "index_traits_on_name", unique: true
+  end
+
+  create_table "types", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "sort_order"
+    t.index ["name"], name: "index_types_on_name", unique: true
   end
 
   # Virtual tables defined in this database.
