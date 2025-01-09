@@ -86,6 +86,27 @@ namespace :scrape do
     Aspect.upsert_all(aspects.to_a, unique_by: :name)
   end
 
+  desc "Load Rarity data from Card List data"
+  task rarities: :environment do
+    json = File.read("tmp/storage/card_list.json")
+    data = Oj.load(json)
+
+    rarities = Set.new
+
+    data.each do |card_data|
+      rarity_data = card_data["attributes"]["rarity"]["data"]["attributes"]
+
+      rarities << {
+        name: rarity_data["name"],
+        character: rarity_data["character"],
+        color: rarity_data["color"],
+        sort_order: rarity_data["sortValue"]
+      }
+    end
+
+    Rarity.upsert_all(rarities.to_a, unique_by: :name)
+  end
+
   desc "Load Card data from Card List data"
   task cards: :environment do
     json = File.read("tmp/storage/card_list.json")

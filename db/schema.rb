@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_09_215647) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_09_221256) do
   create_table "aspects", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -36,6 +36,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_09_215647) do
     t.date "released_on"
     t.integer "sort_order"
     t.index ["code"], name: "index_expansions_on_code", unique: true
+  end
+
+  create_table "rarities", force: :cascade do |t|
+    t.string "name"
+    t.string "character"
+    t.string "color"
+    t.integer "sort_order"
+    t.index ["name"], name: "index_rarities_on_name", unique: true
   end
 
   # Virtual tables defined in this database.
