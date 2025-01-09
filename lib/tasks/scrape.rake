@@ -57,7 +57,8 @@ namespace :scrape do
 
       expansions << {
         code: expansion_data["code"],
-        title: expansion_data["name"]
+        title: expansion_data["name"],
+        sort_order: expansion_data["sortValue"]
       }
     end
 
@@ -76,7 +77,8 @@ namespace :scrape do
         aspects << {
           name: aspect_data["attributes"]["name"],
           description: aspect_data["attributes"]["description"],
-          color: aspect_data["attributes"]["color"]
+          color: aspect_data["attributes"]["color"],
+          sort_order: aspect_data["attributes"]["sortValue"]
         }
       end
     end
