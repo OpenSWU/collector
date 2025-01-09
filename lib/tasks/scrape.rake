@@ -126,6 +126,25 @@ namespace :scrape do
     Rarity.upsert_all(rarities.to_a, unique_by: :name)
   end
 
+  desc "Load Traits data from Card List data"
+  task traits: :environment do
+    json = File.read("tmp/storage/card_list.json")
+    data = Oj.load(json)
+
+    traits = Set.new
+
+    data.each do |card_data|
+      card_data["attributes"]["traits"]["data"].each do |trait_data|
+        traits << {
+          name: trait_data["attributes"]["name"],
+          description: trait_data["attributes"]["description"]
+        }
+      end
+    end
+
+    Trait.upsert_all(traits.to_a, unique_by: :name)
+  end
+
   desc "Load Card data from Card List data"
   task cards: :environment do
     json = File.read("tmp/storage/card_list.json")
