@@ -62,7 +62,7 @@ namespace :scrape do
       }
     end
 
-    Expansion.upsert_all(expansions.to_a, unique_by: :code)
+    CardData::Expansion.upsert_all(expansions.to_a, unique_by: :code)
   end
 
   desc "Load Arenas data from Card List data"
@@ -81,7 +81,7 @@ namespace :scrape do
       end
     end
 
-    Arena.upsert_all(arenas.to_a, unique_by: :name)
+    CardData::Arena.upsert_all(arenas.to_a, unique_by: :name)
   end
 
   desc "Load Aspects data from Card List data"
@@ -102,7 +102,7 @@ namespace :scrape do
       end
     end
 
-    Aspect.upsert_all(aspects.to_a, unique_by: :name)
+    CardData::Aspect.upsert_all(aspects.to_a, unique_by: :name)
   end
 
   desc "Load Rarity data from Card List data"
@@ -123,7 +123,7 @@ namespace :scrape do
       }
     end
 
-    Rarity.upsert_all(rarities.to_a, unique_by: :name)
+    CardData::Rarity.upsert_all(rarities.to_a, unique_by: :name)
   end
 
   desc "Load Traits data from Card List data"
@@ -142,7 +142,7 @@ namespace :scrape do
       end
     end
 
-    Trait.upsert_all(traits.to_a, unique_by: :name)
+    CardData::Trait.upsert_all(traits.to_a, unique_by: :name)
   end
 
   desc "Load Types data from Card List data"
@@ -171,7 +171,7 @@ namespace :scrape do
       end
     end
 
-    Type.upsert_all(types.to_a, unique_by: :name)
+    CardData::Type.upsert_all(types.to_a, unique_by: :name)
   end
 
   desc "Load Card data from Card List data"
@@ -192,6 +192,6 @@ namespace :scrape do
       }
     end
 
-    Card.upsert_all(cards.to_a, unique_by: %i[swuid swu_cardid])
+    CardData::Card.upsert_all(cards.to_a, unique_by: %i[swuid swu_cardid])
   end
 end

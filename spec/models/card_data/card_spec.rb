@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Card, type: :model do
+RSpec.describe CardData::Card, type: :model do
   its(:swuid) { is_expected.to be_nil }
   its(:swu_cardid) { is_expected.to be_nil }
   its(:title) { is_expected.to be_nil }

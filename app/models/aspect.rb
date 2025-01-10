@@ -1,2 +1,0 @@
-class Aspect < ApplicationRecord
-end

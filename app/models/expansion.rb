@@ -1,2 +1,0 @@
-class Expansion < ApplicationRecord
-end
