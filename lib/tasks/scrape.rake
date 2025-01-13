@@ -45,26 +45,6 @@ namespace :scrape do
     File.write("tmp/storage/card_list.json", Oj.dump(card_list))
   end
 
-  desc "Load Expansion data from Card List data"
-  task expansions: :environment do
-    json = File.read("tmp/storage/card_list.json")
-    data = Oj.load(json)
-
-    expansions = Set.new
-
-    data.each do |card_data|
-      expansion_data = card_data["attributes"]["expansion"]["data"]["attributes"]
-
-      expansions << {
-        code: expansion_data["code"],
-        title: expansion_data["name"],
-        sort_order: expansion_data["sortValue"]
-      }
-    end
-
-    CardData::Expansion.upsert_all(expansions.to_a, unique_by: :code)
-  end
-
   desc "Load Arenas data from Card List data"
   task arenas: :environment do
     json = File.read("tmp/storage/card_list.json")
@@ -103,6 +83,26 @@ namespace :scrape do
     end
 
     CardData::Aspect.upsert_all(aspects.to_a, unique_by: :name)
+  end
+
+  desc "Load Expansion data from Card List data"
+  task expansions: :environment do
+    json = File.read("tmp/storage/card_list.json")
+    data = Oj.load(json)
+
+    expansions = Set.new
+
+    data.each do |card_data|
+      expansion_data = card_data["attributes"]["expansion"]["data"]["attributes"]
+
+      expansions << {
+        code: expansion_data["code"],
+        title: expansion_data["name"],
+        sort_order: expansion_data["sortValue"]
+      }
+    end
+
+    CardData::Expansion.upsert_all(expansions.to_a, unique_by: :code)
   end
 
   desc "Load Rarity data from Card List data"
@@ -188,10 +188,15 @@ namespace :scrape do
         title: card_data["attributes"]["title"],
         subtitle: card_data["attributes"]["subtitle"],
         number: card_data["attributes"]["cardNumber"],
-        set_code: card_data["attributes"]["expansion"]["data"]["attributes"]["code"]
+        set_code: card_data["attributes"]["expansion"]["data"]["attributes"]["code"],
+        artist: card_data["attributes"]["artist"],
+        url: card_data["attributes"]["artFront"]["data"]["attributes"]["url"]
       }
     end
 
     CardData::Card.upsert_all(cards.to_a, unique_by: %i[swuid swu_cardid])
   end
+
+  desc "Load all data from Card List data"
+  task all: %i[expansions arenas aspects rarities traits types cards]
 end

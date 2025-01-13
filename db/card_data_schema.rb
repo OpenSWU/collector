@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_09_224829) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_13_020329) do
   create_table "arenas", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -32,6 +32,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_09_224829) do
     t.string "subtitle"
     t.integer "number"
     t.string "set_code"
+    t.string "artist"
+    t.string "url"
     t.index ["set_code"], name: "index_cards_on_set_code"
     t.index ["swuid", "swu_cardid"], name: "index_cards_on_swuid_and_swu_cardid", unique: true
   end

@@ -7,4 +7,6 @@ RSpec.describe CardData::Card, type: :model do
   its(:subtitle) { is_expected.to be_nil }
   its(:number) { is_expected.to be_nil }
   its(:set_code) { is_expected.to be_nil }
+  its(:artist) { is_expected.to be_nil }
+  its(:url) { is_expected.to be_nil }
 end
