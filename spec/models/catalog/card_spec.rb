@@ -5,6 +5,8 @@ RSpec.describe Catalog::Card do
 
   it { is_expected.to belong_to(:expansion).class_name("Catalog::Expansion") }
   it { is_expected.to belong_to(:rarity).class_name("Catalog::Rarity") }
+  it { is_expected.to belong_to(:front_type).class_name("Catalog::Type") }
+  it { is_expected.to belong_to(:back_type).class_name("Catalog::Type").optional }
   it { is_expected.to have_and_belong_to_many(:arenas).class_name("Catalog::Arena").join_table("cards_arenas") }
   it { is_expected.to have_and_belong_to_many(:aspects).class_name("Catalog::Aspect").join_table("cards_aspects") }
   it { is_expected.to have_and_belong_to_many(:keywords).class_name("Catalog::Keyword").join_table("cards_keywords") }
