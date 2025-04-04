@@ -1,0 +1,7 @@
+<%= turbo_stream.append "cards" do %>
+  <%= render partial: "card", collection: @cards %>
+<% end %>
+
+<%= turbo_stream.replace "pagination" do %>
+  <%= render partial: "next_page" %>
+<% end %>
